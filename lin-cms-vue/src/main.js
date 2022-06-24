@@ -20,12 +20,14 @@ import SourceCode from '@/component/base/source-code/source-code'
 import '@/assets/style/index.scss'
 import 'element-plus/dist/index.css'
 import '@/assets/style/realize/element-variable.scss'
+import { globalRegister } from './global'
 
 const app = createApp(App)
 
 app.use(store)
 app.use(router)
 app.use(ElementPlus, { locale })
+
 app.use(LinNotify, {
   reconnection: true,
   reconnectionAttempts: 5,
@@ -38,7 +40,7 @@ app.component('sticky-top', StickyTop)
 app.component('source-code', SourceCode)
 
 app.config.globalProperties.$filters = filters
-
+app.use(globalRegister)
 app.directive('permission', permissionDirective)
 
 app.mount('#app')

@@ -1,104 +1,81 @@
 <template>
   <div>
     <!-- 列表页面 -->
-    <div class="container" v-if="!showEdit">
-      <div class="header">
-        <div class="title">图书列表</div>
-      </div>
-      <!-- 表格 -->
-      <el-table :data="books" v-loading="loading">
-        <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
-        <el-table-column prop="title" label="书名"></el-table-column>
-        <el-table-column prop="author" label="作者"></el-table-column>
-        <el-table-column label="操作" fixed="right" width="275">
-          <template #default="scope">
-            <el-button plain size="small" type="primary" @click="handleEdit(scope.row.id)">编辑</el-button>
-            <el-button
-              plain
-              size="small"
-              type="danger"
-              @click="handleDelete(scope.row.id)"
-              v-permission="{ permission: '删除图书', type: 'disabled' }"
-              >删除</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+    <div class="container" style="padding-top: 2%">
+      <el-card style="margin-bottom: 10px">
+        <div class="header">
+          <div class="title">学生列表</div>
+        </div>
 
-    <!-- 编辑页面 -->
-    <book-modify v-else @editClose="editClose" :editBookId="editBookId"></book-modify>
+        <page-search :searchFormConfig="searchFormConfig"></page-search>
+      </el-card>
+      <!-- 表格 -->
+      <el-card>
+        <page-content
+          :contentTableConfig="contentTableConfig"
+          pageName="student"
+          @newBtnClick="handleNewData"
+          @editBtnClick="handleEditData"
+        ></page-content>
+      </el-card>
+
+      <page-modal
+        :defaultInfo="defaultInfo"
+        ref="pageModalRef"
+        pageName="student"
+        :modalConfig="modalConfigRef"
+      ></page-modal>
+    </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
-import { ElMessageBox, ElMessage } from 'element-plus'
-import bookModel from '@/model/book'
-import BookModify from './book'
+import { onMounted, ref, computed } from 'vue'
 
+import PageSearch from '@/component/page-search'
+import PageContent from '@/component/page-content'
+import PageModal from '@/component/page-modal'
+
+import { searchFormConfig } from './config/search.config'
+import { contentTableConfig } from './config/content.config'
+import { modalConfig } from './config/modal.config'
+
+import { usePageModal } from '@/hooks/use-page-modal'
 export default {
   components: {
-    BookModify,
+    PageContent,
+    PageSearch,
+    PageModal,
   },
   setup() {
-    const books = ref([])
-    const editBookId = ref(1)
-    const loading = ref(false)
-    const showEdit = ref(false)
-
     onMounted(() => {
-      getBooks()
+      // getBooks()
     })
 
-    const getBooks = async () => {
-      try {
-        loading.value = true
-        books.value = await bookModel.getBooks()
-        loading.value = false
-      } catch (error) {
-        loading.value = false
-        if (error.code === 10020) {
-          books.value = []
-        }
-      }
-    }
+    const modalConfigRef = computed(() => {
+      // const departmentItem = modalConfig.formItems.find(item => item.field === 'departmentId')
+      // departmentItem.options = store.state.entireDepartment.map(item => {
+      //   return { title: item.name, value: item.id }
+      // })
 
-    const handleEdit = id => {
-      showEdit.value = true
-      editBookId.value = id
-    }
+      // const roleItem = modalConfig.formItems.find(item => item.field === 'roleId')
+      // roleItem.options = store.state.entireRole.map(item => {
+      //   return { title: item.name, value: item.id }
+      // })
+      return modalConfig
+    })
 
-    const handleDelete = id => {
-      ElMessageBox.confirm('此操作将永久删除该图书, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        const res = await bookModel.deleteBook(id)
-        if (res.code < window.MAX_SUCCESS_CODE) {
-          getBooks()
-          ElMessage.success(`${res.message}`)
-        }
-      })
-    }
-
-    const editClose = () => {
-      showEdit.value = false
-      getBooks()
-    }
-
-    const indexMethod = index => index + 1
+    const [pageModalRef, defaultInfo, handleNewData, handleEditData] = usePageModal()
 
     return {
-      books,
-      loading,
-      showEdit,
-      editClose,
-      handleEdit,
-      editBookId,
-      indexMethod,
-      handleDelete,
+      modalConfigRef,
+      pageModalRef,
+      defaultInfo,
+      handleNewData,
+      handleEditData,
+      modalConfig,
+      searchFormConfig,
+      contentTableConfig,
     }
   },
 }
@@ -114,8 +91,8 @@ export default {
     align-items: center;
 
     .title {
-      height: 59px;
-      line-height: 59px;
+      // height: 30px;
+      // line-height: 30px;
       color: $parent-title-color;
       font-size: 16px;
       font-weight: 500;

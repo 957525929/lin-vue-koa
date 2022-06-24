@@ -18,7 +18,7 @@ export const permissionStageConfig = state => {
   const { stageConfig, permissions, user } = state
   const tempStageConfig = Util.deepClone(stageConfig)
   const shookConfig = permissionShaking(tempStageConfig, permissions, user)
-  console.log('shookConfig', shookConfig)
+  // console.log('shookConfig', shookConfig)
   // 设置舞台缓存
   const list = {}
   deepTravel(shookConfig, item => {
@@ -222,4 +222,15 @@ function permissionShaking(stageConfig, permissions, currentUser) {
   })
   // console.log('shookConfig', shookConfig)
   return IterationDelateMenuChildren(shookConfig)
+}
+
+export function pageListData(state) {
+  return pageName => {
+    return state[`${pageName}List`]
+  }
+}
+export function pageListCount(state) {
+  return pageName => {
+    return state[`${pageName}Count`]
+  }
 }

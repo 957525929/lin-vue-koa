@@ -40,4 +40,9 @@ export default {
   [types.SET_REFRESH_OPTION](state, option) {
     state.refreshOptions = option
   },
+
+  changeStudentList(state, option) {
+    state.studentList = option
+    // console.log('state.studentList', option)
+  },
 }

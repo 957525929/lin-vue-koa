@@ -1,4 +1,4 @@
-import { createStore, createLogger } from 'vuex'
+import { createStore, createLogger, useStore as useVuexStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
 import mutations from './mutation'
@@ -16,6 +16,9 @@ const vuexLocal = new VuexPersistence({
 })
 
 const debug = process.env.NODE_ENV !== 'production'
+export function useStore() {
+  return useVuexStore()
+}
 
 export default createStore({
   state,

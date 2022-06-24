@@ -21,4 +21,7 @@ export default {
 
   sidebarLevel: appConfig.sidebarLevel || 3,
   defaultRoute: appConfig.defaultRoute || '/about',
+
+  //学生列表
+  studentList: [],
 }
