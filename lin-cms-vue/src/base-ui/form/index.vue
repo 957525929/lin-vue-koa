@@ -15,6 +15,8 @@
                   :show-password="item.type === 'password'"
                   :model-value="modelValue[`${item.field}`]"
                   @update:modelValue="handleValueChange($event, item.field)"
+                  :rows="item.rows || ''"
+                  :type="item.textType || ''"
                 />
               </template>
               <template v-else-if="item.type === 'select'">

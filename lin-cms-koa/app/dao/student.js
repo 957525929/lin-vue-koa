@@ -46,7 +46,7 @@ class StudentDao {
 
     bk.name = v.get("body.name");
     bk.studentNum = v.get("body.studentNum");
-    // bk.summary = v.get("body.summary");
+    bk.summary = v.get("body.summary");
     // bk.image = v.get("body.image");
     await bk.save();
   }
@@ -61,7 +61,7 @@ class StudentDao {
     console.log("student", student);
     student.name = v.get("body.name");
     student.studentNum = v.get("body.studentNum");
-    // student.summary = v.get("body.summary");
+    student.summary = v.get("body.summary");
     // student.image = v.get("body.image");
     await student.save();
   }
