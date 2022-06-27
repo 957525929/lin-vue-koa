@@ -13,13 +13,24 @@ class StudentDao {
   }
 
   async getStudentByKeyword(q) {
-    const student = await Student.findOne({
-      where: {
-        title: {
-          [Sequelize.Op.like]: `%${q}%`,
+    // const params = JSON.parse(q);
+    let student;
+    if (q.name || q.studentNum) {
+      student = await Student.findAll({
+        where: {
+          name: {
+            [Sequelize.Op.like]: `%${q.name}%`,
+          },
+          studentNum: {
+            [Sequelize.Op.like]: `%${q.studentNum}%`,
+          },
         },
-      },
-    });
+      });
+    } else {
+      student = await Student.findAll();
+    }
+
+    console.log("student", student);
     return student;
   }
 

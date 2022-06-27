@@ -23,7 +23,7 @@ export default {
     // console.log(payload)
     const pageName = payload.pageName
     const pageUrl = `/v1/${pageName}`
-
+    console.log('payload.queryInfo', { q: payload.queryInfo })
     //2.对页面发生请求
     const pageResult = await Common.getPageListData(pageUrl, payload.queryInfo)
     // console.log('pageResult', pageResult)

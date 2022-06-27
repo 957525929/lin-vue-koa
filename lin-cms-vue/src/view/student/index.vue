@@ -7,11 +7,16 @@
           <div class="title">学生列表</div>
         </div>
 
-        <page-search :searchFormConfig="searchFormConfig"></page-search>
+        <page-search
+          :searchFormConfig="searchFormConfig"
+          @resetBtnClick="handleResetClick"
+          @queryBtnClick="handleQueryClick"
+        ></page-search>
       </el-card>
       <!-- 表格 -->
       <el-card>
         <page-content
+          ref="pageContentRef"
           :contentTableConfig="contentTableConfig"
           pageName="student"
           @newBtnClick="handleNewData"
@@ -40,6 +45,7 @@ import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
 
+import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 export default {
   components: {
@@ -48,9 +54,11 @@ export default {
     PageModal,
   },
   setup() {
-    onMounted(() => {
-      // getBooks()
-    })
+    // onMounted(() => {
+    //   // getBooks()
+    // })
+
+    const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
 
     const modalConfigRef = computed(() => {
       // const departmentItem = modalConfig.formItems.find(item => item.field === 'departmentId')
@@ -76,6 +84,9 @@ export default {
       modalConfig,
       searchFormConfig,
       contentTableConfig,
+      pageContentRef,
+      handleResetClick,
+      handleQueryClick,
     }
   },
 }

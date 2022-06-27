@@ -8,7 +8,7 @@ export const searchFormConfig = {
       placeholder: '请输入学生名称',
     },
     {
-      field: 'intro',
+      field: 'studentNum',
       type: 'input',
       label: '学号',
       placeholder: '请输入学号',

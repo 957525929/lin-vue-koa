@@ -4,7 +4,7 @@ import { StudentSearchValidator, CreateOrUpdateStudentValidator } from "../../va
 import { PositiveIdValidator } from "../../validator/common";
 
 import { getSafeParamId } from "../../lib/util";
-import { BookNotFound } from "../../lib/exception";
+import { StudentNotFound } from "../../lib/exception";
 import { StudentDao } from "../../dao/student";
 
 // book 的红图实例
@@ -29,20 +29,29 @@ studentApi.get("/:id", async (ctx) => {
 });
 
 studentApi.get("/", async (ctx) => {
-  const books = await studentDto.getStudents();
+  // const books = await studentDto.getStudents();
+
   // if (!books || books.length < 1) {
   //   throw new NotFound({
   //     message: '没有找到相关书籍'
   //   });
   // }
-  ctx.json(books);
+  console.log("ctxctxctx", ctx.query);
+  const book = await studentDto.getStudentByKeyword(ctx.query);
+  console.log("book", book);
+  if (!book) {
+    throw new StudentNotFound();
+  }
+
+  ctx.json(book);
+  // console.log("book111111111111111s", ctx);
 });
 
 studentApi.get("/search/one", async (ctx) => {
   const v = await new StudentSearchValidator().validate(ctx);
   const book = await studentDto.getStudentByKeyword(v.get("query.q"));
   if (!book) {
-    throw new BookNotFound();
+    throw new StudentNotFound();
   }
   ctx.json(book);
 });

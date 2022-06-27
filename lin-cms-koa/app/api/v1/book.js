@@ -30,6 +30,7 @@ bookApi.get("/:id", async (ctx) => {
 
 bookApi.get("/", async (ctx) => {
   const books = await bookDto.getBooks();
+
   // if (!books || books.length < 1) {
   //   throw new NotFound({
   //     message: '没有找到相关书籍'
@@ -40,7 +41,9 @@ bookApi.get("/", async (ctx) => {
 
 bookApi.get("/search/one", async (ctx) => {
   const v = await new BookSearchValidator().validate(ctx);
+  console.log(" v", v);
   const book = await bookDto.getBookByKeyword(v.get("query.q"));
+  console.log("book", book);
   if (!book) {
     throw new BookNotFound();
   }
